@@ -24,6 +24,7 @@ function StudentList() {
 
 	const showModalDelete = (student) => {
 		setShow(true);
+		setDeleteStudent(getAllStudent());
 	};
 
 	const closeModal = () => {
