@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { getAllStudent, addNewStudent } from "../service/studentService";
 import StudentItem from "./StudentItem";
 import AddComponent from "./AddStudent";
+import DeleteStudent from "./DeleteStudent";
 
 function StudentList() {
 	// Khai báo state cho danh sách sinh viên và trạng thái loading
 	const [studentList, setStudentList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false); //dùng để khai báo một state với giá trị ban đầu là false, và có thể thay đổi trạng thái này sau này để kiểm soát xem ứng dụng có đang trong trạng thái "đang tải" hay không.
+	const [show, setShow] = useState(false);
+	const [deleteStudent, setDeleteStudent] = useState({});
 
 	// Hàm xử lý trạng thái loading
 	const handleIsLoading = () => {
@@ -20,6 +22,13 @@ function StudentList() {
 		handleIsLoading(); // Cập nhật trạng thái loading để load lại danh sách
 	};
 
+	const showModalDelete = (student) => {
+		setShow(true);
+	};
+
+	const closeModal = () => {
+		setShow(false);
+	};
 	// Lấy danh sách sinh viên khi có sự thay đổi trạng thái loading
 	useEffect(() => {
 		setStudentList(getAllStudent());
@@ -47,10 +56,11 @@ function StudentList() {
 							</thead>
 							<tbody>
 								{studentList.map((s) => (
-									<StudentItem key={s.email} student={s} />
+									<StudentItem key={s.email} student={s} showModalDelete={showModalDelete} />
 								))}
 							</tbody>
 						</table>
+						<DeleteStudent show={show} closeModal={closeModal} student={deleteStudent} />
 					</div>
 				</div>
 			</div>

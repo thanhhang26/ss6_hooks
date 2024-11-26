@@ -23,3 +23,10 @@ export function addNewStudent(student) {
 	// kết nối API để thêm mới
 	studentList.push(student);
 }
+export function deleteStudentByEmail(email) {
+	for (let i = 0; i < studentList.length; i++) {
+		if (studentList[i].email === email) {
+			studentList.splice(i, 1);
+		}
+	}
+}
