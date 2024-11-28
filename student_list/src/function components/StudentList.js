@@ -11,11 +11,15 @@ function StudentList() {
 	const [show, setShow] = useState(false);
 	const [deleteStudent, setDeleteStudent] = useState({});
 
+	// Lấy danh sách sinh viên khi có sự thay đổi trạng thái loading
+	useEffect(() => {
+		setStudentList(getAllStudent());
+	}, [isLoading]);
+
 	// Hàm xử lý trạng thái loading
 	const handleIsLoading = () => {
 		setIsLoading((prevState) => !prevState); //Hàm này thay đổi trạng thái của isLoading. Nếu isLoading là true, nó sẽ trở thành false và ngược lại. Điều này sẽ kích hoạt useEffect để tải lại dữ liệu mỗi khi isLoading thay đổi.
 	};
-
 	// Hàm thêm sinh viên mới vào danh sách
 	const handleAddStudent = (student) => {
 		addNewStudent(student); // Gọi API thêm sinh viên
@@ -23,17 +27,13 @@ function StudentList() {
 	};
 
 	const showModalDelete = (student) => {
+		setDeleteStudent(student);
 		setShow(true);
-		setDeleteStudent(getAllStudent());
 	};
 
 	const closeModal = () => {
 		setShow(false);
 	};
-	// Lấy danh sách sinh viên khi có sự thay đổi trạng thái loading
-	useEffect(() => {
-		setStudentList(getAllStudent());
-	}, [isLoading]);
 
 	return (
 		<>
@@ -42,11 +42,12 @@ function StudentList() {
 					<div className="card-header">
 						<h1>Student List</h1>
 					</div>
-					<AddComponent handleAddStudent={handleAddStudent} handleIsLoading={handleIsLoading} />
+					<AddComponent handleAddStudent={handleAddStudent} handleIsLoading={handleIsLoading} setStudentList={setStudentList} />
 					<div className="card-body">
 						<table className="table table-light">
 							<thead>
 								<tr>
+									<th>id</th>
 									<th>Name</th>
 									<th>Phone</th>
 									<th>Email</th>
@@ -57,11 +58,11 @@ function StudentList() {
 							</thead>
 							<tbody>
 								{studentList.map((s) => (
-									<StudentItem key={s.email} student={s} showModalDelete={showModalDelete} />
+									<StudentItem key={s.id} student={s} showModalDelete={showModalDelete} />
 								))}
 							</tbody>
 						</table>
-						<DeleteStudent show={show} closeModal={closeModal} student={deleteStudent} />
+						<DeleteStudent student={deleteStudent} show={show} closeModal={closeModal} />
 					</div>
 				</div>
 			</div>

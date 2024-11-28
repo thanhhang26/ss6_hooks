@@ -1,5 +1,5 @@
 import React from "react";
-import { deleteStudentByEmail } from "../service/studentService";
+import { deleteStudentById } from "../service/studentService";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -8,8 +8,7 @@ function DeleteStudent(props) {
 		props.closeModal();
 	};
 	const handleDelete = () => {
-		deleteStudentByEmail(props.student.email);
-		props.showModalDelete();
+		deleteStudentById(props.student.id);
 		handleClose();
 	};
 
@@ -20,7 +19,11 @@ function DeleteStudent(props) {
 					<Modal.Title>Modal heading</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					Bạn có muốn xoá sinh viên <strong>{props.student?.email}</strong> không?
+					Bạn có muốn xoá sinh viên{" "}
+					<strong>
+						{props.student?.id} - {props.student?.name}
+					</strong>{" "}
+					không?
 				</Modal.Body>
 				{/*  Thẻ <strong> được dùng để làm nổi bật nội dung văn bản.
 				props.student?.email kiểm tra an toàn trước khi truy cập email (đề phòng trường hợp props.student không được truyền vào).
